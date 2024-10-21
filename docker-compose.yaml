@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  # PHP Service
+  php:
+    build:
+      context: './php_docker/'
+      args:
+        user: fred
+        uid: 1000
+    restart: unless-stopped
+    volumes:
+      - ./www/:/var/www/html/
+      - ./wwwlaravel/:/var/www/htmllaravel/
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  # Apache Service
+  apache:
+    restart: unless-stopped
+    build: './apache_docker/'
+    depends_on:
+      - php
+    ports:
+      - '80:80'
+      - '8090:8090'
+    volumes:
+      - ./www/:/var/www/html/
+      - ./wwwlaravel/:/var/www/htmllaravel/
+
+  # MariaDB Service
+  mariadb:
+    restart: unless-stopped
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysqldata/:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    restart: unless-stopped
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: mariadb
+    depends_on:
+      - mariadb

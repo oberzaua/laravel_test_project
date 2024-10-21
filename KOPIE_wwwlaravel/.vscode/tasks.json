@@ -1,0 +1,104 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "laravelServerDebug-ps",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                        "args": ["", ""]
+                    }
+                },
+                "command": "php"
+            },
+            "linux": {
+                "command": "/usr/bin/php"
+            },
+            "osx": {
+                "command": "/Applications/XAMPP/bin/php"
+            },
+            "args": [
+                "'-dxdebug.start_with_request=1'",
+                "'-dxdebug.mode=debug'",
+                "'-dxdebug.client_port=9000'",
+                "-S",
+                "localhost:${input:m7port}",
+                "-t",
+                "${workspaceRoot}/public"
+            ],
+            "problemMatcher": ["$eslint-stylish"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "laravelServerNoDebug",
+            "type": "shell",
+            "windows": {
+                "command": "php"
+            },
+            "linux": {
+                "command": "/usr/bin/php"
+            },
+            "osx": {
+                "command": "/Applications/XAMPP/bin/php"
+            },
+            "args": [
+                "-S",
+                "localhost:${input:m7port}",
+                "-t",
+                "${workspaceRoot}/public"
+            ],
+            "problemMatcher": ["$eslint-stylish"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "laravelServerDebug-cmd",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                },
+                "command": "php"
+            },
+            "linux": {
+                "command": "/usr/bin/php"
+            },
+            "osx": {
+                "command": "/Applications/XAMPP/bin/php"
+            },
+            "args": [
+                "-dxdebug.start_with_request=1",
+                "-dxdebug.mode=debug",
+                "-dxdebug.client_port=9000",
+                "-S",
+                "localhost:${input:m7port}",
+                "-t",
+                "${workspaceRoot}/public"
+            ],
+            "problemMatcher": ["$eslint-stylish"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "m7port",
+            "description": "Port:",
+            "default": "9999",
+            "type": "pickString",
+            "options": ["9999", "9998", "9997", "9996"]
+        }
+    ]
+}
